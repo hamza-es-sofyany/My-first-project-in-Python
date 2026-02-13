@@ -1,20 +1,20 @@
-class Book:
+from media import Media
 
-    def __init__(self, title, author, isbn, Available = True):
-        self.title = title
-        self.author = author
-        self.isbn = isbn
-        self.Available = Available
+class Book(Media):
 
+    def __init__(self, title, author, isbn, available  = True):
+        super().__init__(title, author, isbn)
+        self.available  = available 
+ 
     def toggle_availability(self):
 
-        if self.Available:
-            self.Available = False
+        if self.available :
+            self.available  = False
         else:
-            self.Available = True
+            self.available  = True
 
     def __str__(self):
-        return f" Title is: {self.title} \n Author is: {self.author}\n isbn is: {self.isbn}\n Availabel is: {self.Available}" 
+        return f" Title is: {self.title} \n Author is: {self.author}\n isbn is: {self.isbn}\n Availabel is: {self.available}" 
     
 
 # print (f"{x.title}...")

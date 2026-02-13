@@ -1,4 +1,4 @@
-
+from ebook import EBook
 class Library:
     def __init__(self):
         self.all_books = []
@@ -13,35 +13,43 @@ class Library:
     
     def add_user(self, user):
         self.all_users.append(user)
-    
-    def borrow_media(self,user_id, isbn):
+
+    def borrow_media(self, user_id, isbn):
         select_user = None
         for user in self.all_users:
             if user.user_id == user_id:
                 select_user = user
                 break
 
-        select_isbn = None
-        for book in self.all_books:
-            if book.isbn ==  isbn:
-                select_isbn = book
+        select_item = None
+        for item in self.all_books:
+            if item.isbn == isbn:
+                select_item = item
                 break
-        
 
-        if select_user == None:
+        if select_user is None:
             print("User not found!")
             return
-        if select_isbn == None:
-            print("Book not found!")
+        if select_item is None:
+            print("Item not found!")
             return
-        if not select_isbn.Available:
-            print("Book not Available!")   
+
+    # ستب 10: إلا كان EBook نخليه ديما يتسلف
+        if isinstance(select_item, EBook):
+            select_user.borrowed_books.append(select_item)
+            print("EBook borrowed successfully!")
             return
-        select_isbn.Available = False
-        select_user.borrowed_books.append(select_isbn)
-        print("Book borrowed successfully!")
 
+    # Book أو Magazine: منطق عادي
+        if not select_item.available:
+            print("Item not available!")
+            return
 
+        select_item.available = False
+        select_user.borrowed_books.append(select_item)
+        print("Item borrowed successfully!")
+
+    
     def return_media(self,user_id, isbn):
         select_user = None
         for user in self.all_users:
@@ -64,7 +72,7 @@ class Library:
         if select_isbn not in select_user.borrowed_books:
             print("User doesn't have this book!")
             return
-        select_isbn.Available = True
+        select_isbn.available = True
         select_user.borrowed_books.remove(select_isbn)
         print("Book returned successfully!")
     def search(self,query):
@@ -78,16 +86,18 @@ class Library:
     def show_stats(self):
         available_books = 0
         borrowed_books = 0
-    
+
         for book in self.all_books:
-            if book.Available:
-                available_books += 1
-            else:
-                borrowed_books += 1
-    
-        print(f"Available: {available_books}")
+            if hasattr(book, "available"):
+                if book.available:
+                    available_books += 1
+                else:
+                    borrowed_books += 1
+
+        print(f"available: {available_books}")
         print(f"Borrowed: {borrowed_books}")
         print(f"Users: {len(self.all_users)}")
+
 
         
 
