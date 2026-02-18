@@ -1,70 +1,73 @@
-# from book import Book
-# from user import User
-# from library import Library
-
-# book1 = Book("habits ", "L3arbi ", "001")
-# book2 = Book("habits2", "bojm3a", "002")
-# book3 = Book("HABITS3", "hmad", "003")
-# book4 = Book("HAbiTs4", "hassan", "004")
-# book5 = Book("walo", "hamza", "006")
-
-# user1 = User("Ahmed", 1, [])
-# user2 = User("Ali", 2, [])
-
-# library = Library()
-
-# library.add_book(book1)
-# library.add_book(book2)
-# library.add_book(book3)
-# library.add_book(book4)
-# library.add_book(book5)
-
-# library.add_user(user1)
-# library.add_user(user2)
-
-# print(f"Total books: {len(library.all_books)}")
-# print(f"Total Users: {len(library.all_users)}")
-
 from book import Book
+from ebook import Ebook
 from user import User
 from library import Library
 
+def main_menu():
+    lib = Library()
+    lib.load_data()
+    
+    while True:
+        print("\n" + "="*40)
+        print("🏛️ LIBRARY SYSTEM")
+        print("1. 🔍 Search")
+        print("2. 📖 Borrow") 
+        print("3. 🔙 Return")
+        print("4. ➕ Add Book")
+        print("5. 💰 Fines")
+        print("6. 📊 Stats")
+        print("0. 🚪 Exit")
+        print("="*40)
+        
+        choice = input("Choose (0-6): ").strip()
+        
+        if choice == "0":
+            lib.save_data()
+            print("✅ Saved & Goodbye!")
+            break
+            
+        elif choice == "1":
+            query = input("Search: ")
+            results = lib.search(query)
+            if results:
+                for book in results:
+                    print(book)
+            else:
+                print("No results!")
+                
+        elif choice == "2":
+            try:
+                user_id = int(input("User ID: "))
+                isbn = input("ISBN: ")
+                lib.borrow_media(user_id, isbn)
+            except ValueError:
+                print("❌ Invalid ID!")
+                
+        elif choice == "3":
+            try:
+                user_id = int(input("User ID: "))
+                isbn = input("ISBN: ")
+                lib.return_media(user_id, isbn)
+            except ValueError:
+                print("❌ Invalid ID!")
+                
+        elif choice == "4":
+            title = input("Title: ")
+            author = input("Author: ")
+            isbn = input("ISBN: ")
+            book_type = input("Type (Book/Ebook): ")
+            book = Book(title, author, isbn, True, book_type)
+            lib.add_book(book)
+            print("✅ Added!")
+            
+        elif choice == "5":
+            print("💰 Fines ready (user.balance)!")
+            
+        elif choice == "6":
+            lib.show_stats()
+            
+        else:
+            print("❌ Wrong choice!")
+
 if __name__ == "__main__":
-    book1 = Book("habits", "L3arbi", "001")
-    book2 = Book("habits2", "bojm3a", "002")
-    book3 = Book("HABITS3", "hmad", "003")
-    book4 = Book("HAbiTs4", "hassan", "004")
-    book5 = Book("walo", "hamza", "006")
-
-    user1 = User("Ahmed", 1, [])
-    user2 = User("Ali", 2, [])
-
-    library = Library()
-
-    library.add_book(book1)
-    library.add_book(book2)
-    library.add_book(book3)
-    library.add_book(book4)
-    library.add_book(book5)
-
-    library.add_user(user1)
-    library.add_user(user2)
-
-    print(f"Total books: {len(library.all_books)}")
-    print(f"Total users: {len(library.all_users)}")
-
-    library.show_stats()
-
-    library.borrow_media(1, "001")
-    library.show_stats()
-
-    library.borrow_media(1, "001")
-
-    res = library.search("habits")
-    for b in res:
-        print(f"*** {b} ***")
-
-    library.return_media(1, "001")
-    library.show_stats()
-
-    library.return_media(2, "001")
+    main_menu()
