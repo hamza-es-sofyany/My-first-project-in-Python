@@ -14,12 +14,10 @@ def main_menu():
         print("2. 📖 Borrow") 
         print("3. 🔙 Return")
         print("4. ➕ Add Book")
-        print("5. 💰 Fines")
-        print("6. 📊 Stats")
         print("0. 🚪 Exit")
         print("="*40)
         
-        choice = input("Choose (0-6): ").strip()
+        choice = input("Choose (0-4): ").strip()
         
         if choice == "0":
             lib.save_data()
@@ -59,12 +57,6 @@ def main_menu():
             book = Book(title, author, isbn, True, book_type)
             lib.add_book(book)
             print("✅ Added!")
-            
-        elif choice == "5":
-            print("💰 Fines ready (user.balance)!")
-            
-        elif choice == "6":
-            lib.show_stats()
             
         else:
             print("❌ Wrong choice!")
